@@ -42,6 +42,8 @@ test.describe('kiltir kode #2 should', () => {
   
   
   
+
+
   test('performance testing', async ({ page }) => {
     test.setTimeout(1_000);
     await page.goto('/');
@@ -59,15 +61,25 @@ test.describe('kiltir kode #2 should', () => {
   
   
   
-  test('interaction testing', async ({ page }) => {
-    await page.goto('/');
-    await expect(page).toHaveScreenshot('interaction-testing_landing.png');
-    await page.getByRole('link', { name: 'Docs -> Find in-depth' }).click();
-    await expect(page).toHaveURL("https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app");
-    await expect(page).toHaveScreenshot('interaction-testing_docs-landing.png');
-    await page.getByRole('row', { name: 'Routing A file-system based' }).getByRole('link').click();
-    await expect(page).toHaveURL("https://nextjs.org/docs/app/building-your-application/routing");
-    await expect(page).toHaveScreenshot('interaction-testing_docs-routing-landing.png');
-  });
+
+
+
+
   
+  test('interaction testing', async ({ page }) => {
+    await test.step('landing', async() => {
+      await page.goto('/');
+      await expect(page).toHaveScreenshot('interaction-testing_landing.png');  
+    });
+    await test.step('docs', async() => {
+      await page.getByRole('link', { name: 'Docs -> Find in-depth' }).click();
+      await expect(page).toHaveURL("https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app");
+      await expect(page).toHaveScreenshot('interaction-testing_docs-landing.png');  
+    });
+    await test.step('docs > routing', async() => {
+      await page.getByRole('row', { name: 'Routing A file-system based' }).getByRole('link').click();
+      await expect(page).toHaveURL("https://nextjs.org/docs/app/building-your-application/routing");
+      await expect(page).toHaveScreenshot('interaction-testing_docs-routing-landing.png');
+    });
+  });
 });
